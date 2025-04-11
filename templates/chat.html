@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI Culture Guide - Learn about traditions, customs, and cultures from around the world">
+    <title>Culture Guide Chatbot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Shadcn UI inspired styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/shadcn.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <meta name="theme-color" content="#1a1a2e">
+</head>
+<body>
+    <!-- Loading screen -->
+    <div class="loading-screen" id="loading-screen">
+        <div class="loader"></div>
+        <p>Starting Culture Guide...</p>
+    </div>
+
+    <div class="starfield" id="starfield"></div>
+    
+    <!-- Quick Questions Toggle Button -->
+    <button class="questions-toggle" id="questions-toggle" aria-label="Toggle quick questions">?</button>
+    
+    <!-- Quick Questions Sidebar - Moved outside -->
+    <div class="quick-questions" id="quick-questions">
+        <h3 class="quick-title">Quick Culture Questions</h3>
+        <div class="question-buttons">
+            <!-- Predefined question buttons will be added here via JS -->
+        </div>
+    </div>
+    
+    <div class="container">
+        <header class="header">
+            <h1 id="title-text">Culture Guide</h1>
+            <p class="subtitle">Ask me about traditions, food, and customs from around the world</p>
+            <div class="chat-actions">
+                <button id="export-chat-btn" class="action-btn modern-btn" aria-label="Export chat">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 15V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Export
+                </button>
+                <button id="clear-chat-btn" class="action-btn modern-btn" aria-label="Clear chat">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 6H5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Clear
+                </button>
+            </div>
+        </header>
+        
+        <main class="chat-container">
+            <div class="particles" id="particles"></div>
+            
+            <div class="chat-box" id="chat-box">
+                <div class="message bot-message">
+                    <div class="sender">Culture Guide</div>
+                    <div class="message-content">
+                        Welcome! I'm your personal Culture Guide. Ask me anything about cultures, traditions, and customs from around the world.
+                        <div class="response-progress"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="typing-indicator" id="typing-indicator">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            </div>
+            
+            <div class="input-container">
+                <div class="input-tooltip">Ask me anything about world cultures!</div>
+                <textarea id="user-input" aria-label="Message input" placeholder="Ask about any culture..." autocomplete="off" rows="1"></textarea>
+                <button id="mic-button" aria-label="Voice input">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 1C11.2044 1 10.4413 1.31607 9.87868 1.87868C9.31607 2.44129 9 3.20435 9 4V12C9 12.7956 9.31607 13.5587 9.87868 14.1213C10.4413 14.6839 11.2044 15 12 15C12.7956 15 13.5587 14.6839 14.1213 14.1213C14.6839 13.5587 15 12.7956 15 12V4C15 3.20435 14.6839 2.44129 14.1213 1.87868C13.5587 1.31607 12.7956 1 12 1Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M19 10V12C19 13.8565 18.2625 15.637 16.9497 16.9497C15.637 18.2625 13.8565 19 12 19C10.1435 19 8.36301 18.2625 7.05025 16.9497C5.7375 15.637 5 13.8565 5 12V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 19V23" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M8 23H16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <button id="send-button" aria-label="Send message">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>Powered by Google's Gemini AI</p>
+            <div class="app-info">
+                <span>© 2023-2024 Culture Guide</span>
+                <span class="info-divider">•</span>
+                <a href="#" class="footer-link" id="privacy-link">Privacy</a>
+                <span class="info-divider">•</span>
+                <a href="#" class="footer-link" id="about-link">About</a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Privacy Modal -->
+    <div class="modal" id="privacy-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Privacy Policy</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>This Culture Guide respects your privacy. We don't store your personal data or share conversations with third parties.</p>
+                <p>Chat history is stored locally in your browser for convenience but isn't transmitted to our servers.</p>
+                <p>Your queries help us improve our service, but individual conversations remain private.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Modal -->
+    <div class="modal" id="about-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>About Culture Guide</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Culture Guide is an AI-powered assistant designed to help you learn about cultures, traditions, and customs from around the world.</p>
+                <p>Whether you're planning a trip, learning about your heritage, or simply curious about other cultures, we're here to help.</p>
+                <p>Our goal is to promote cultural understanding and appreciation through accessible information.</p>
+                <p>Created by <a href="#" class="modal-link">Culture Guide Team</a>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast" id="notification-toast">
+        <div class="toast-content">
+            <span id="toast-message">Message copied to clipboard!</span>
+        </div>
+    </div>
+
+    <!-- Voice recording indicator -->
+    <div class="listening-indicator" id="listening-indicator">
+        Recording... <span class="listening-dots"></span>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

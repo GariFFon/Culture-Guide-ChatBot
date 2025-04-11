@@ -1,0 +1,293 @@
+/* ShadCN UI Inspired Styles */
+:root {
+  --primary: rgb(255, 94, 98);
+  --primary-foreground: rgb(255, 255, 255);
+  --secondary: rgb(255, 138, 0);
+  --secondary-foreground: rgb(255, 255, 255);
+  --border: rgba(255, 255, 255, 0.1);
+  --ring: rgba(255, 138, 0, 0.3);
+  --background: rgba(18, 18, 24, 0.8);
+  --foreground: rgb(244, 244, 245);
+  --radius: 0.5rem;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --nebula-glow: 0 0 25px rgba(255, 138, 0, 0.15);
+}
+
+/* Enhanced nebula effects for the UI */
+.message-content {
+  position: relative;
+  overflow: hidden;
+}
+
+.message-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 94, 98, 0.05), transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.user-message .message-content {
+  background-color: rgba(255, 94, 98, 0.15);
+  color: var(--foreground);
+  border: 1px solid rgba(255, 94, 98, 0.2);
+  box-shadow: 0 3px 10px rgba(255, 94, 98, 0.1), var(--nebula-glow);
+}
+
+.bot-message .message-content {
+  background-color: rgba(255, 138, 0, 0.15);
+  color: var(--foreground);
+  border: 1px solid rgba(255, 138, 0, 0.2);
+  box-shadow: 0 3px 10px rgba(255, 138, 0, 0.1), var(--nebula-glow);
+}
+
+/* Centered elements */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.chat-box {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Pulsating glow for title */
+.header h1 {
+  position: relative;
+}
+
+.header h1::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  border-radius: 2px;
+  animation: pulse-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-glow {
+  0% {
+    opacity: 0.6;
+    width: 80px;
+    box-shadow: 0 0 10px rgba(255, 94, 98, 0.3);
+  }
+  100% {
+    opacity: 1;
+    width: 120px;
+    box-shadow: 0 0 25px rgba(255, 138, 0, 0.5);
+  }
+}
+
+/* Quick Questions */
+.quick-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--foreground);
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.quick-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+}
+
+.question-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.question-button {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--foreground);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: visible;
+  text-align: left;
+  width: 100%;
+  min-width: 0;
+}
+
+.question-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--primary), var(--secondary));
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.question-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.question-button:hover::before {
+  opacity: 1;
+}
+
+.question-button:active {
+  transform: translateY(0);
+}
+
+.question-emoji {
+  font-size: 1.2rem;
+  min-width: 24px;
+  text-align: center;
+}
+
+.question-text {
+  flex: 1;
+  word-break: normal;
+  overflow-wrap: break-word;
+  white-space: normal;
+  hyphens: auto;
+  width: 100%;
+  display: inline-block;
+}
+
+/* Button sparkle animation */
+.button-sparkle {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  background-image: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(255, 255, 255, 0) 50%
+  );
+  opacity: 0;
+  mix-blend-mode: overlay;
+  animation: sparkle 1s ease-out forwards;
+}
+
+@keyframes sparkle {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Scrollbar styling for the sidebar */
+.quick-questions::-webkit-scrollbar {
+  width: 4px;
+}
+
+.quick-questions::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.quick-questions::-webkit-scrollbar-thumb {
+  background: rgba(255, 138, 0, 0.5);
+  border-radius: 10px;
+}
+
+/* Style for the toggle button */
+#toggle-questions {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 8px;
+  color: var(--foreground);
+  transition: transform 0.2s ease;
+}
+
+#toggle-questions:hover {
+  transform: scale(1.2);
+}
+
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+  .quick-questions {
+    position: static;
+    width: 100%;
+    margin-bottom: 1rem;
+    max-height: 180px;
+    overflow-y: auto;
+    transform: none !important;
+    border-radius: var(--radius);
+    right: auto;
+  }
+  
+  .quick-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .chat-container:hover .quick-questions {
+    transform: none !important;
+  }
+  
+  .chat-container {
+    flex-direction: column !important;
+  }
+  
+  .question-buttons {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .question-button {
+    width: calc(50% - 0.5rem);
+    font-size: 0.8rem;
+    padding: 0.5rem;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    overflow: visible;
+  }
+  
+  .question-emoji {
+    font-size: 1rem;
+  }
+} 
