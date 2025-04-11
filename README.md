@@ -89,3 +89,39 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [Google Gemini AI](https://deepmind.google/technologies/gemini/) for providing the AI model
 - [Flask](https://flask.palletsprojects.com/) for the web framework
 - [Shadcn UI](https://ui.shadcn.com/) for design inspiration 
+
+## Deployment on Vercel
+
+You can deploy this application on Vercel by following these steps:
+
+1. **Install the Vercel CLI** (optional but recommended):
+   ```
+   npm install -g vercel
+   ```
+
+2. **Log in to Vercel** (if using CLI):
+   ```
+   vercel login
+   ```
+
+3. **Deploy using the Vercel CLI**:
+   ```
+   vercel
+   ```
+   
+   Or deploy by connecting your GitHub repository in the Vercel dashboard:
+   - Go to [Vercel](https://vercel.com/)
+   - Sign up or log in with GitHub/GitLab/Bitbucket
+   - Import your repository
+   - Configure the project settings (set environment variables)
+   - Deploy
+
+4. **Configure Environment Variables**:
+   During the deployment process, make sure to set up your environment variables:
+   - `GOOGLE_API_KEY`: Your Google Gemini API key
+
+5. **After Deployment**:
+   - Once deployed, Vercel will provide you with a URL to access your application
+   - Test that your application works correctly
+
+This project is already configured for Vercel deployment with the `vercel.json` file and necessary directories. 

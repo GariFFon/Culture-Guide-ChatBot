@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from flask import Flask, render_template, request, jsonify, url_for, current_app
 from functools import wraps
 from threading import Lock
+import argparse
 
 # Configure logging
 logging.basicConfig(
@@ -252,24 +253,34 @@ def chat():
                        '<li>Discover cultural practices for travel preparation</li>' +
                        '<li>Research cultural heritage and historical traditions</li>' +
                        '<li>Understand celebrations and ceremonies around the world</li>' +
-                       '</ul><br>' +
-                       'Simply ask me about any culture, tradition, or country you\'re interested in!'
+                       '<li>Ask about traditional art forms from India</li>' +
+                       '</ul>'
         })
     
-    # Regular message handling
     try:
-        response = get_response(user_message)
-        logger.info(f"Sending response: {response[:50]}...")
-        return jsonify({'response': response})
+        # Get response from AI
+        response_text = get_response(user_message)
+        return jsonify({'response': response_text})
     except Exception as e:
         logger.error(f"Error in chat endpoint: {e}")
-        return jsonify({
-            'response': 'Sorry, I encountered an unexpected error. Please try again later.',
-            'error': str(e)
-        }), 500
+        return jsonify({'error': 'An error occurred while processing your request. Please try again later.'}), 500
 
+# Only run the server if this file is executed directly
 if __name__ == '__main__':
-    logger.info("Starting the Culture Guide Chatbot Web Interface...")
-    logger.info("Open your browser and navigate to http://127.0.0.1:5002")
-    logger.info(f"API Key configured: {'Yes' if GOOGLE_API_KEY else 'No - Please check your .env file'}")
-    app.run(debug=True, port=5002) 
+    parser = argparse.ArgumentParser(description='Culture Guide Chatbot')
+    parser.add_argument('--port', type=int, default=5002, help='Port to run the server on')
+    parser.add_argument('--auto-port', action='store_true', help='Automatically find an available port')
+    args = parser.parse_args()
+    
+    port = args.port
+    
+    if args.auto_port:
+        import socket
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.bind(('localhost', 0))
+        port = sock.getsockname()[1]
+        sock.close()
+    
+    print(f"Starting server on port {port}")
+    print(f"Access the chatbot at http://127.0.0.1:{port}")
+    app.run(host='0.0.0.0', port=port, debug=False) 
